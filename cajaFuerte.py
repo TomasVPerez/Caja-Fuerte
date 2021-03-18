@@ -4,17 +4,17 @@
 from hashlib import sha256
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.Random import new as Random
-from email.message import EmailMessage
-import base64, getpass, time, smtplib, os, geocoder     
+import base64, getpass, time, smtplib, os, geocoder    
 
+#Contraseña y path al archivo deseado usando enviroment variables.
 ADMINPW = os.getenv('ADMINPW')
 CAJAFUERTE = os.getenv('TXT')
 
 class AESEncripcion:
     def __init__(self, llave):
-        self.largo = 16
+        self.largo = 16 #Largo de 16 bytes.
         self.archivo = CAJAFUERTE
-        self.llave = sha256(llave.encode("utf-8")).digest()[:32] #Tomamos la pwd, la codificamos con sha256 y tomamos los primeros 32 bytes de la codificacion.
+        self.llave = sha256(llave.encode("utf-8")).digest()[:32] #Tomamos ADMINPW, la codificamos con sha256 y tomamos los primeros 32 bytes.
         #Pad para que los datos sean multiplos de 16.
         self.pad = lambda s: s + (self.largo - len(s) % self.largo) * chr((self.largo - len(s) % self.largo)) #El primer calculo nos da un numero, el segundo calculo nos da un numero y con chr obtenemos la letra correspondiente al mismo.
         #Usamos ese caracter para paddear los datos.
@@ -32,20 +32,21 @@ class AESEncripcion:
 
     def encripcion(self):
         textoPleno = self.leer()
-        iv = Random().read(16) #Devuelve bytes random del.largo escpecificado con read() usando AES.
-        cifrar = AES.new(self.llave, AES.MODE_OFB, iv)
+        iv = Random().read(16) #Devuelve bytes random del largo escpecificado.
+        cifrar = AES.new(self.llave, AES.MODE_OFB, iv) 
         textoCifrado = base64.b64encode(iv + cifrar.encrypt(bytes(textoPleno, "utf-8"))).decode() #Cifra el texto con base64 usando los bytes random y el texto en bytes.
-        self.sobrescribir(textoCifrado)
+        self.sobrescribir(textoCifrado) 
     
     def desencripcion(self):
-        textoEncriptado = self.leer() #Lee el archivo con el texto encriptado
-        textoCifrado = base64.b64decode(textoEncriptado) #Obteniendo el texto cifrado con base64
-        iv = textoCifrado[:self.largo] #Obtenemos el iv usado
+        textoEncriptado = self.leer() #Lee el archivo con el texto encriptado.
+        textoCifrado = base64.b64decode(textoEncriptado) #Obteniendo el texto cifrado con base64.
+        iv = textoCifrado[:self.largo] #Obtenemos el iv usado.
         decifrar = AES.new(self.llave, AES.MODE_OFB, iv) #Lo deciframos usando la llave y el iv
-        texto = self.unpad(decifrar.decrypt(textoCifrado[self.largo:])).decode() #Lo terminamos de desencriptar con unpad usando el texto decifrado desencriptado
+        texto = self.unpad(decifrar.decrypt(textoCifrado[self.largo:])).decode() #Lo terminamos de desencriptar con unpad usando el texto decifrado desencriptado.
         self.sobrescribir(texto)    
 
-    
+        
+
 def encriptar():
     E = AESEncripcion(llave=ADMINPW)
     E.encripcion()
@@ -55,23 +56,25 @@ def desencriptar():
     E.desencripcion()
 
 def mostrar():
-    print("\nLinks: ")
+    print("\n ----------CAJA ABIERTA----------")
     with open(CAJAFUERTE, "r") as a:
         desencriptar()
         print(a.read())
         encriptar()
 
 def mandarMail():
+    #Mails y credenciales guardados en enviroment variables.
     REMITENTE = os.getenv('OUTMAIL')
     DESTINATARIO = os.getenv('PTNMAIL')
-    CLAVE = os.getenv('OUTMAILKEY')
+    CLAVE = os.getenv('OUTMAILKEY') #Contraseña del remitente.
 
+    #Conseguimos las coordenadas con la ip.
     g = geocoder.ip('me')
     locacion = g.latlng
 
     mensaje = (f"\nAlguien intento entrar a tu caja fuerte.\n Fecha y hora: {time.ctime()}\n Lugar: {locacion}")
 
-    servidor = smtplib.SMTP("smtp-mail.outlook.com", 587)
+    servidor = smtplib.SMTP("smtp-mail.outlook.com", 587) #Servidor outlook. Si queremos usar otro mail buscar el nombre del servidor smtplib para el mismo (Ej: smpt.gmail.com).
     servidor.ehlo()
     servidor.starttls()
     servidor.login(REMITENTE, CLAVE)
