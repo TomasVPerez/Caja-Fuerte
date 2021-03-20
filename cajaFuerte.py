@@ -9,9 +9,8 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 import base64, getpass, time, smtplib, os, geocoder, cv2    
 
-#Contraseña y path al archivo deseado usando enviroment variables.
-ADMINPW = os.getenv('ADMINPW')
-CAJAFUERTE = os.getenv('TXT')
+ADMINPW = os.getenv('ADMINPW') #Contraseña que usaremos para entrar a la caja fuerte.
+CAJAFUERTE = os.getenv('TXT') #Directorio donde se encuentra el archivo de texto a encriptar.
 
 class AESEncripcion:
     def __init__(self, llave):
