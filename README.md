@@ -10,13 +10,13 @@ Si ponemos mal la contraseña se nos envia un mail avisandonos, detallando la ho
 
 ## Para correrlo: 
 
-- Setear nuestros valores para las variables "ADMINPW" 
+-Setear nuestros valores para las variables "ADMINPW", "CAJAFUERTE", "REMITENTE", "DESTINATARIO" Y "CLAVE".
 
-Para encriptarlo por primera vez debemos comentar el main y solamente correr la función ¨encriptar()¨
+-Para encriptarlo por primera vez debemos comentar el main y solamente correr la función ¨encriptar()¨. Luego volvemos a dejar el código como estaba.
 
 
-## To do:
+### To do:
 
-- Seteo de contraseña y archivo por consola la primera vez que se ejecuta (para no tener que editar el código).
+-Seteo de contraseña y archivo por consola la primera vez que se ejecuta (para no tener que editar el código).
 
 
