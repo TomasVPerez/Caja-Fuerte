@@ -4,7 +4,10 @@
 from hashlib import sha256
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.Random import new as Random
-import base64, getpass, time, smtplib, os, geocoder    
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
+import base64, getpass, time, smtplib, os, geocoder, cv2    
 
 #Contraseña y path al archivo deseado usando enviroment variables.
 ADMINPW = os.getenv('ADMINPW')
@@ -45,7 +48,7 @@ class AESEncripcion:
         texto = self.unpad(decifrar.decrypt(textoCifrado[self.largo:])).decode() #Lo terminamos de desencriptar con unpad usando el texto decifrado desencriptado.
         self.sobrescribir(texto)    
 
-        
+     
 
 def encriptar():
     E = AESEncripcion(llave=ADMINPW)
@@ -61,24 +64,53 @@ def mostrar():
         desencriptar()
         print(a.read())
         encriptar()
+        
+def sacarFoto():
+    cam =  cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    ret, imagen = cam.read()
+    cv2.imshow("cam", imagen)
 
+    k = cv2.waitKey(1)
+    home = os.path.expanduser("~")
+    archivo = f"{home}/Desktop/img.jpg"
+
+    cv2.imwrite(archivo, imagen)
+    cam.release
+    cv2.destroyAllWindows
+
+    return archivo        
+        
 def mandarMail():
-    #Mails y credenciales guardados en enviroment variables.
+    #Credenciales guardadas en enviroment variables.
     REMITENTE = os.getenv('OUTMAIL')
     DESTINATARIO = os.getenv('PTNMAIL')
-    CLAVE = os.getenv('OUTMAILKEY') #Contraseña del remitente.
+    CLAVE = os.getenv('OUTMAILKEY')
 
-    #Conseguimos las coordenadas con la ip.
     g = geocoder.ip('me')
-    locacion = g.latlng
+    locacion = g.latlng #Obtenemos la latitud y longitud.
 
-    mensaje = (f"\nAlguien intento entrar a tu caja fuerte.\n Fecha y hora: {time.ctime()}\n Lugar: {locacion}")
+    archivo = sacarFoto()
+    with open(archivo, "rb") as imagen:
+        datos = imagen.read()
 
-    servidor = smtplib.SMTP("smtp-mail.outlook.com", 587) #Servidor outlook. Si queremos usar otro mail buscar el nombre del servidor smtplib para el mismo (Ej: smpt.gmail.com).
+    #Le damos formato al mensaje
+    mensaje = MIMEMultipart()
+    mensaje['Subject'] = "Caja Fuerte"
+    mensaje['From'] = REMITENTE
+    mensaje['TO'] = DESTINATARIO
+    texto = MIMEText(f"\nAlguien intento entrar a tu caja fuerte.\n Fecha y hora: {time.ctime()}\n Lugar: {locacion}")
+    mensaje.attach(texto)
+
+    img = MIMEImage(datos, name=os.path.basename(archivo))
+    mensaje.attach(img)
+    
+    #Enviamos el mail.
+    servidor = smtplib.SMTP("smtp-mail.outlook.com", 587)
     servidor.ehlo()
     servidor.starttls()
     servidor.login(REMITENTE, CLAVE)
-    servidor.sendmail(REMITENTE, DESTINATARIO, mensaje)
+    servidor.sendmail(REMITENTE, DESTINATARIO, mensaje.as_string())
+    servidor.quit()
 
     usuario = os.path.expanduser("~").split("\\")[2]
     print(f"Se avisó a {usuario} por mail.")
