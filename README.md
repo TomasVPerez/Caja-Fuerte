@@ -3,20 +3,30 @@ Encripción de archivo de texto protegido por contraseña.
 
 ## ¿Cómo funciona?
 
-Encripta el archivo deseado y lo protege con la contraseña que queramos.
-Si ponemos bien la contraseña desencripta el archivo, imprime el contenido en la consola y lo vuelve a encriptar.
+-Toma como argumento una opcion (-o) y una clave (-c).
 
-Si ponemos mal la contraseña se nos envia un mail avisandonos, detallando la hora, las coordenadas y una captura de la webcam en el momento.
+-Opciones:
+e para encriptar el archivo.
+d para desencriptar el archivo.
+m para mostrar el contenido y volver a encriptarlo con la misma clave.
+
+### Ejemplos:
+```
+python cajaFuerte.py -o e -c 1234
+python cajaFuerte.py -o d -c 1234
+python cajaFuerte.py -o m -c 1234
+```
+
+-Si ponemos mal la clave al querer desencriptar, se nos envia un mail detallando la hora, las coordenadas y una captura de la webcam en el momento. También se vuelve a encriptar el archivo para mas seguridad.
 
 ## Para correrlo: 
 
--Setear nuestros valores para las variables "ADMINPW", "CAJAFUERTE", "REMITENTE", "DESTINATARIO" Y "CLAVE".
-
--Para encriptarlo por primera vez debemos comentar el main y solamente correr la función ¨encriptar()¨. Luego volvemos a dejar el código como estaba.
+-Setear nuestros valores para las variables "CAJAFUERTE", "REMITENTE", "DESTINATARIO" Y "CLAVE".
+-Poner el archivo.bat en el directorio :C/Users/TuNombreDeUsuario para correr el programa solo escriendo cajaFuerte.
 
 
 ### To do:
 
--Seteo de contraseña y archivo por consola la primera vez que se ejecuta (para no tener que editar el código).
+-Crear archivo con intentos fallidos para poder deshacer la doble encriptación.
 
 
