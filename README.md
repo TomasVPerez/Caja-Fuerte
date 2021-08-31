@@ -6,6 +6,7 @@ Encripción de archivo de texto protegido por contraseña.
 -Toma como argumento una opcion (-o) y una clave (-c).
 
 -Opciones:
+
 e para encriptar el archivo.
 d para desencriptar el archivo.
 m para mostrar el contenido y volver a encriptarlo con la misma clave.
