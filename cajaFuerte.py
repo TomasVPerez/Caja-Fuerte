@@ -9,9 +9,9 @@ import getpass, time, smtplib, os, geocoder, cv2 , argparse
 
 def args_parser():
     parser = argparse.ArgumentParser(description='archivo -o e(encriptar)/d(desencriptar) clave')
-    parser.add_argument('-o', '--opcion', type=str, required=True, help='encriptar/desencriptar/mostrar archivo // -o e, d, de')
+    parser.add_argument('-o', '--opcion', type=str, required=True, help='encriptar/desencriptar/mostrar archivo // -o e, d, m')
     parser.add_argument('-a', '--archivo', type=str, required=False, default=CAJAFUERTE, help='archivo')
-    parser.add_argument('-p', '--clave', type=str, required=True, help='clave')
+    parser.add_argument('-c', '--clave', type=str, required=True, help='clave')
     args = parser.parse_args()
     return args      
 
