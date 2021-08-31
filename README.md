@@ -8,7 +8,9 @@ Encripción de archivo de texto protegido por contraseña.
 -Opciones:
 
 e para encriptar el archivo.
-d para desencriptar el archivo.
+
+d para desencriptar el archivo.ç
+
 m para mostrar el contenido y volver a encriptarlo con la misma clave.
 
 ### Ejemplos:
