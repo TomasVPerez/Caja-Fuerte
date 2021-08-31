@@ -9,7 +9,7 @@ Encripción de archivo de texto protegido por contraseña.
 
 e para encriptar el archivo.
 
-d para desencriptar el archivo.ç
+d para desencriptar el archivo.
 
 m para mostrar el contenido y volver a encriptarlo con la misma clave.
 
@@ -25,7 +25,8 @@ python cajaFuerte.py -o m -c 1234
 ## Para correrlo: 
 
 -Setear nuestros valores para las variables "CAJAFUERTE", "REMITENTE", "DESTINATARIO" Y "CLAVE".
--Poner el archivo.bat en el directorio :C/Users/TuNombreDeUsuario para correr el programa solo escriendo cajaFuerte.
+
+-Colocar cajaFuerte.bat en el directorio :C/Users/TuNombreDeUsuario para correr el programa solo escriendo cajaFuerte.
 
 
 ### To do:
