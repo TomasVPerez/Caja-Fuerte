@@ -26,8 +26,7 @@ python cajaFuerte.py -o m -c 1234
 
 -Setear nuestros valores para las variables "CAJAFUERTE", "REMITENTE", "DESTINATARIO" Y "CLAVE".
 
--Colocar cajaFuerte.bat en el directorio :C/Users/TuNombreDeUsuario para correr el programa solo escriendo cajaFuerte.
-
+-Colocar cajaFuerte.bat en el directorio :C/Users/TuNombreDeUsuario para correr el programa solo escriendo cajaFuerte en la consola de comandos.
 
 ### To do:
 
