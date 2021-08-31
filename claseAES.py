@@ -1,3 +1,6 @@
+#TomasPerez
+#https://github.com/TomasVPerez
+
 from hashlib import sha256
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.Random import new as Random
