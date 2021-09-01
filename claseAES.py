@@ -6,7 +6,7 @@ from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.Random import new as Random
 import base64, os
 
-CAJAFUERTE = os.getenv('TXT') #env variable que contiene el path al archico que quiero encriptar
+CAJAFUERTE = os.getenv('TXT') #env variable que contiene el path al archivo que quiero encriptar
 
 class EncripcionAES:
 
